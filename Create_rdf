@@ -18,6 +18,28 @@ bands = BNode()
 g.add((nod1, mo.MusicGroup, bands))
 Collection(g, bands, [Literal("THE DOORS"), Literal("ZZ TOP"), Literal("LITTLE FIT")])
 
+nod2 = URIRef("http://purl.org/ontology/mo/HardRock")
+g.add((nod2, RDF.type, mo.Genre))
+g.add((nod2, FOAF.name, Literal("HARD ROCK")))
+b1 = BNode()
+g.add((nod2, mo.Genre, b1))
+Collection(g, b1, [Literal("NEW WAVE"), Literal("GRUNGE"), Literal("PUNK")])
+bands1 = BNode()
+g.add((nod2, mo.MusicGroup, bands1))
+Collection(g, bands1, [Literal("VAN VALEN"), Literal("LED ZEPPELIN"), Literal("THE WHO")])
+
+nod3 = URIRef("http://purl.org/ontology/mo/BritInvasion")
+g.add((nod3, RDF.type, mo.Genre))
+g.add((nod3, FOAF.name, Literal("BRIT INVASION")))
+b1 = BNode()
+nod4 = URIRef("http://purl.org/ontology/mo/BritInvasion")
+g.add((nod3, mo.Genre, b1))
+Collection(g, b1, [Literal("SOUL"), Literal("POP ROCK"), Literal("HARD ROCK")])
+bands1 = BNode()
+g.add((nod3, mo.MusicGroup, bands1))
+Collection(g, bands1, [Literal("ROLLING STONES"), Literal("ANIMALS"), Literal("CREME")])
+
+
 g.serialize(destination="triples.txt", format="turtle")
  
 if __name__ == '__main__':
