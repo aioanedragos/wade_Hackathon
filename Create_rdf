@@ -1,0 +1,24 @@
+from rdflib import Graph, Namespace, URIRef, BNode, Literal
+from rdflib.namespace import RDF, FOAF, XSD
+from rdflib.collection import Collection
+ 
+g = Graph()
+ 
+mo= Namespace("http://purl.org/ontology/mo/")
+schema = Namespace("https://schema.org/")
+g.bind("mo", mo)
+ 
+nod1 = URIRef("http://purl.org/ontology/mo/PsychedelicRock")
+g.add((nod1, RDF.type, mo.Genre))
+g.add((nod1, FOAF.name, Literal("PSYCHEDELIC ROCK")))
+b = BNode()
+g.add((nod1, mo.Genre, b))
+Collection(g, b, [Literal("SOUTHERN ROCK"), Literal("PROG ROCK"), Literal("GLITTER/GLAM")])
+bands = BNode()
+g.add((nod1, mo.MusicGroup, bands))
+Collection(g, bands, [Literal("THE DOORS"), Literal("ZZ TOP"), Literal("LITTLE FIT")])
+
+g.serialize(destination="triples.txt", format="turtle")
+ 
+if __name__ == '__main__':
+    pass
