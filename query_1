@@ -1,0 +1,39 @@
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+
+SELECT DISTINCT ?human ?humanLabel (SAMPLE(?birthDayTimeVal) as ?birthday) WHERE {
+
+  ?human wdt:P31 wd:Q5.
+  ?human p:P1303 ?instrument.
+#   ?instrument rdfs:label ?instrumentLabel.
+  ?human p:P27 ?citizenship.
+#   ?citizenship rdfs:label ?citizenshipLabel.
+  ?human p:P569 ?birthDate.
+  ?birthDate psv:P569 ?birthDateValue.
+  ?birthDateValue wikibase:timeValue ?birthDayTimeVal.
+  FILTER(?birthDayTimeVal > "+1940-01-01T00:00:00Z"^^xsd:dateTime).
+  FILTER(?birthDayTimeVal < "+1990-01-01T00:00:00Z"^^xsd:dateTime).
+  {
+    ?instrument (ps:P1303/(wdt:P279*)) wd:Q6607. # instrument is guitar
+  }
+  UNION # or
+  {
+    ?instrument (ps:P1303/(wdt:P279*)) wd:Q901207 # instrument is keyboard
+  }
+  {
+    ?citizenship (ps:P27/(wdt:P279*)) wd:Q30. # country of citizenship is USA
+  }
+  UNION # or
+  {
+    ?citizenship (ps:P27/(wdt:P279*)) wd:Q145. # country of citizenship is UK
+  }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+}
+group by ?human ?humanLabel
+LIMIT 50
